@@ -492,11 +492,203 @@ function updateAssessmentUI(data, previousProb) {
 
   // 6. Actionable Triage Guidance
   setText("resClinicalAction", data.actionText);
+
+  // 7. Plain-Language Explainable AI (XAI) Patient Summary
+  renderPlainLanguageExplanation(data);
 }
 
 function setText(id, text) {
   const el = document.getElementById(id);
   if (el) el.textContent = text;
+}
+
+// Plain-Language Explainable AI (XAI) Patient Summary Generator
+function renderPlainLanguageExplanation(data) {
+  const container = document.getElementById("xaiSimpleExplanation");
+  if (!container) return;
+
+  const raw = data.raw;
+  const prob = data.probability;
+  const probPct = data.probPercent;
+  const riskClass = data.riskClass; // low, mod, high, critical
+
+  // 1. Plain-English Verdict
+  let verdictIcon = "✅";
+  let verdictColor = "var(--status-low)";
+  let verdictHeadline = `Low Risk (${probPct}%) - Normal Cardiac Function`;
+  let verdictSummary = `Based on the test results, this patient's heart is working normally. Blood is flowing freely through the coronary arteries, and the heart muscle is responding well under exercise stress.`;
+
+  if (riskClass === "critical") {
+    verdictIcon = "🚨";
+    verdictColor = "var(--status-critical)";
+    verdictHeadline = `Critical Risk (${probPct}%) - High Suspicion of Heart Artery Blockage`;
+    verdictSummary = `There are strong and urgent warning signs that one or more arteries supplying blood to the heart are narrowed or blocked. When the patient exercises, the heart muscle is starved of oxygen.`;
+  } else if (riskClass === "high") {
+    verdictIcon = "⚠️";
+    verdictColor = "var(--blue-600)";
+    verdictHeadline = `High Risk (${probPct}%) - Significant Warning Signs of Heart Strain`;
+    verdictSummary = `The test reveals noticeable indicators of cardiovascular disease. The heart muscle appears to struggle to get enough blood and oxygen during physical activity.`;
+  } else if (riskClass === "mod") {
+    verdictIcon = "⚠️";
+    verdictColor = "var(--status-mod)";
+    verdictHeadline = `Moderate / Borderline Risk (${probPct}%) - Early Warning Signs`;
+    verdictSummary = `The patient sits in a borderline risk range. While not an immediate emergency, there are early physiological clues suggesting increased strain or early plaque buildup in the blood vessels.`;
+  }
+
+  // 2. Specific Plain-Language Observations (Why did the AI say this?)
+  const observations = [];
+
+  // Observation on Chest Pain / Silent Ischemia
+  if (raw.ChestPainType === "ASY") {
+    if (riskClass === "critical" || riskClass === "high") {
+      observations.push({
+        icon: "⚠️",
+        title: "Silent Warning (No Obvious Chest Pain)",
+        desc: "Even though the patient did not report typical chest pain, silent artery blockages are dangerous because damage occurs without warning. This is common in patients with elevated blood pressure or diabetes."
+      });
+    } else {
+      observations.push({
+        icon: "ℹ️",
+        title: "No Chest Pain Reported",
+        desc: "The patient had no angina discomfort during the exam."
+      });
+    }
+  } else if (raw.ChestPainType === "TA") {
+    observations.push({
+      icon: "⚠️",
+      title: "Typical Angina Pain",
+      desc: "The patient reported classic chest tightness or pressure, a textbook symptom when heart muscle demands more oxygen than the arteries can deliver."
+    });
+  } else if (raw.ChestPainType === "ATA") {
+    observations.push({
+      icon: "🛡️",
+      title: "Atypical Chest Sensations",
+      desc: "The discomfort reported is atypical and is generally protective against severe blockages in coronary arteries."
+    });
+  } else if (raw.ChestPainType === "NAP") {
+    observations.push({
+      icon: "ℹ️",
+      title: "Non-Anginal Discomfort",
+      desc: "Chest symptoms are likely musculoskeletal or digestive rather than related to coronary artery blockage."
+    });
+  }
+
+  // Observation on Exercise ECG & ST Depression
+  if (raw.Oldpeak >= 1.5 || raw.ST_Slope === "Flat" || raw.ST_Slope === "Down") {
+    observations.push({
+      icon: "📉",
+      title: "ECG Electrical Tracing Dipped During Stress",
+      desc: `The treadmill ECG showed a dip of ${raw.Oldpeak} mm (ST depression) with a ${raw.ST_Slope.toLowerCase()}-sloping shape. This is an objective electrical sign that the heart muscle was starved of oxygen while exercising.`
+    });
+  } else {
+    observations.push({
+      icon: "📈",
+      title: "Healthy Exercise Electrical Tracing",
+      desc: `The ECG electrical waveform stayed healthy with an upward slope (${raw.Oldpeak} mm drop), showing the heart muscle maintained good oxygenation under physical stress.`
+    });
+  }
+
+  // Observation on Heart Rate Response
+  if (data.biomarkers.chronotropicIncomp) {
+    observations.push({
+      icon: "💓",
+      title: "Heart Could Not Speed Up Sufficiently (Chronotropic Incompetence)",
+      desc: `During maximum exertion, the heart only reached ${data.biomarkers.pctMaxHRAchieved}% of the expected peak rate for their age (target ${data.biomarkers.theoreticalMaxHR} bpm). The heart struggled to pump fast enough to meet exercise demand.`
+    });
+  } else {
+    observations.push({
+      icon: "💓",
+      title: "Robust Heart Rate Response",
+      desc: `The heart accelerated smoothly to ${data.biomarkers.pctMaxHRAchieved}% of target capacity (${raw.MaxHR} bpm), indicating healthy nervous system control of the cardiac pacemaker.`
+    });
+  }
+
+  // Observation on Exercise Angina
+  if (raw.ExerciseAngina === "Y") {
+    observations.push({
+      icon: "🚨",
+      title: "Exercise Directly Triggered Chest Pain",
+      desc: "Physical exertion directly brought on angina, demonstrating that arterial blood flow fell short under exercise load."
+    });
+  }
+
+  // Observation on Vitals & Metabolic Load
+  const metabolicClues = [];
+  if (raw.RestingBP >= 140) metabolicClues.push(`high blood pressure (${raw.RestingBP} mmHg)`);
+  if (raw.Cholesterol >= 240) metabolicClues.push(`elevated cholesterol (${raw.Cholesterol} mg/dL)`);
+  if (raw.FastingBS == 1) metabolicClues.push(`elevated blood sugar (diabetes marker > 120 mg/dL)`);
+  if (metabolicClues.length > 0) {
+    observations.push({
+      icon: "🩺",
+      title: "Underlying Vessel Wear & Tear",
+      desc: `Presence of ${metabolicClues.join(" and ")} accelerates plaque accumulation inside the coronary arteries.`
+    });
+  }
+
+  // 3. Recommended Next Steps in Simple Terms
+  let nextStepsHtml = "";
+  if (riskClass === "critical" || riskClass === "high") {
+    nextStepsHtml = `
+      <div class="xai-action-box" style="border-left-color: var(--status-critical); background: #FEF2F2;">
+        <strong>Recommended Next Steps in Simple Words:</strong>
+        <ol style="margin: 0.35rem 0 0 1.15rem; padding: 0; line-height: 1.6;">
+          <li><strong>See a Cardiologist Promptly:</strong> An ultrasound scan of the heart (echocardiogram) and a CT coronary angiogram should be scheduled to see the arteries clearly.</li>
+          <li><strong>Take Prescribed Medications:</strong> Blood pressure and cholesterol medications help stabilize arterial walls and reduce clot risk.</li>
+          <li><strong>Avoid Unsupervised Heavy Workouts:</strong> Refrain from intense physical exertion until an imaging specialist confirms safe exercise thresholds.</li>
+        </ol>
+      </div>
+    `;
+  } else if (riskClass === "mod") {
+    nextStepsHtml = `
+      <div class="xai-action-box" style="border-left-color: var(--status-mod); background: #FFFBEB;">
+        <strong>Recommended Next Steps in Simple Terms:</strong>
+        <ol style="margin: 0.35rem 0 0 1.15rem; padding: 0; line-height: 1.6;">
+          <li><strong>24-Hour Heart Monitor (Holter):</strong> Track heart rhythm over a full day of normal activities.</li>
+          <li><strong>Heart-Healthy Nutrition:</strong> Adopt a Mediterranean-style diet (olive oil, leafy greens, lean protein) to reduce arterial inflammation.</li>
+          <li><strong>Follow-Up in 6 Months:</strong> Re-check blood pressure and cholesterol targets.</li>
+        </ol>
+      </div>
+    `;
+  } else {
+    nextStepsHtml = `
+      <div class="xai-action-box" style="border-left-color: var(--status-low); background: #ECFDF5;">
+        <strong>Recommended Next Steps in Simple Terms:</strong>
+        <ol style="margin: 0.35rem 0 0 1.15rem; padding: 0; line-height: 1.6;">
+          <li><strong>Keep Up Active Living:</strong> 150 minutes of moderate aerobic exercise (brisk walking, swimming, cycling) per week.</li>
+          <li><strong>Annual Routine Check:</strong> Have blood pressure and cholesterol screened once a year.</li>
+          <li><strong>Healthy Sleep & Stress Habits:</strong> Adequate rest supports long-term vascular flexibility.</li>
+        </ol>
+      </div>
+    `;
+  }
+
+  // Render into HTML
+  container.innerHTML = `
+    <div class="xai-verdict" style="color: ${verdictColor};">
+      <span>${verdictIcon}</span>
+      <span>${verdictHeadline}</span>
+    </div>
+    <p style="margin-bottom: 0.75rem; color: var(--text-secondary); line-height: 1.55;">
+      ${verdictSummary}
+    </p>
+
+    <div style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--blue-700); margin-top: 0.75rem; margin-bottom: 0.4rem;">
+      🔍 Why the AI Made This Decision (Simple Clues):
+    </div>
+    <ul class="xai-points-list">
+      ${observations.map(item => `
+        <li class="xai-point-item">
+          <span class="xai-point-icon">${item.icon}</span>
+          <div>
+            <strong style="color: var(--text-primary);">${item.title}:</strong>
+            <span>${item.desc}</span>
+          </div>
+        </li>
+      `).join("")}
+    </ul>
+
+    ${nextStepsHtml}
+  `;
 }
 
 // Render Patient SHAP Waterfall Bars

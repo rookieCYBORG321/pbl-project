@@ -94,7 +94,7 @@
           <div class="card">
             <div class="card-header" style="display:flex; justify-content:space-between; align-items:center;">
               <h3 class="card-title">
-                <i data-lucide="clipboard-check" class="text-orange" style="margin-right:0.5rem;"></i>
+                <i data-lucide="clipboard-check" class="text-blue" style="margin-right:0.5rem;"></i>
                 Clinical Parameters & Stress Testing
               </h3>
               <div style="display:flex; gap:0.5rem;">
@@ -286,7 +286,7 @@
           <div class="card assessment-card">
             <div class="card-header" style="display:flex; justify-content:space-between; align-items:center;">
               <h3 class="card-title">
-                <i data-lucide="gauge" class="text-orange" style="margin-right:0.5rem;"></i>
+                <i data-lucide="gauge" class="text-blue" style="margin-right:0.5rem;"></i>
                 Clinical Assessment
               </h3>
               <button id="btnPrintReport" class="btn btn-secondary btn-sm" title="Generate printable clinical assessment summary">
@@ -334,9 +334,9 @@
 
                     <!-- Optimal Cutoff 0.371 Marker Notch -->
                     <g class="cutoff-marker-group" title="Optimal Triage Cutoff (37.1%)">
-                      <line x1="88" y1="43" x2="81" y2="28" stroke="#EA580C" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="2,2" />
-                      <circle cx="81" cy="28" r="3" fill="#EA580C" />
-                      <text x="70" y="24" font-size="9" font-family="'JetBrains Mono', monospace" font-weight="700" fill="#EA580C" text-anchor="end">Cutoff 0.371</text>
+                      <line x1="88" y1="43" x2="81" y2="28" stroke="#2563EB" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="2,2" />
+                      <circle cx="81" cy="28" r="3" fill="#2563EB" />
+                      <text x="70" y="24" font-size="9" font-family="'JetBrains Mono', monospace" font-weight="700" fill="#2563EB" text-anchor="end">Cutoff 0.371</text>
                     </g>
 
                     <!-- Animated Needle Group (Pivoting at exact arc center: 120, 115) -->
@@ -344,10 +344,10 @@
                       <!-- Needle Shaft -->
                       <polygon points="117.5,115 122.5,115 120.8,36 119.2,36" fill="#1C1917" />
                       <!-- Needle Accent Tip -->
-                      <polygon points="118.5,44 121.5,44 120,31" fill="#EA580C" />
+                      <polygon points="118.5,44 121.5,44 120,31" fill="#2563EB" />
                       <!-- Center Pivot Base -->
                       <circle cx="120" cy="115" r="9" fill="#1C1917" />
-                      <circle cx="120" cy="115" r="5" fill="#EA580C" />
+                      <circle cx="120" cy="115" r="5" fill="#2563EB" />
                       <circle cx="120" cy="115" r="2" fill="#FFFFFF" />
                     </g>
                   </svg>
@@ -410,6 +410,19 @@
                 </div>
               </div>
 
+              <!-- Plain-Language Explainable AI (XAI) Patient Summary Box -->
+              <div class="plain-english-xai-card" id="plainEnglishXAICard">
+                <div class="xai-header">
+                  <div class="xai-badge">
+                    <i data-lucide="sparkles"></i> Explainable AI (XAI)
+                  </div>
+                  <span class="xai-subtitle">What Happened to This Patient in Simple Words</span>
+                </div>
+                <div class="xai-content" id="xaiSimpleExplanation">
+                  <!-- Dynamically populated in simple words via app.js -->
+                </div>
+              </div>
+
               <!-- Actionable Triage Recommendation -->
               <div class="triage-guidance" id="resClinicalAction">
                 Urgent cardiology alert: Evidence of severe myocardial ischemia and silent transmural damage. Immediate stress echocardiography, troponin assay, and urgent catheterization angiography indicated.
@@ -444,7 +457,7 @@
           <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem; margin-bottom:1.25rem;">
             <div>
               <h3 style="font-size:1.15rem; font-weight:700; margin-bottom:0.25rem;">
-                <i data-lucide="upload-cloud" class="text-orange" style="margin-right:0.4rem;"></i>
+                <i data-lucide="upload-cloud" class="text-blue" style="margin-right:0.4rem;"></i>
                 Upload Patient Cohort CSV
               </h3>
               <p style="font-size:0.85rem; color:var(--text-muted);">
@@ -483,7 +496,7 @@
           <div style="display:flex; gap:1.75rem; align-items:center; flex-wrap:wrap;">
             <div style="background:#fff; padding:0.6rem 1.1rem; border-radius:var(--radius-md); border:1px solid var(--border-medium);">
               <span style="font-size:0.75rem; text-transform:uppercase; color:var(--text-muted); font-weight:700; display:block;">Total Patients</span>
-              <span id="batchTotalCount" class="mono text-orange" style="font-size:1.45rem; font-weight:800; line-height:1;">20</span>
+              <span id="batchTotalCount" class="mono text-blue" style="font-size:1.45rem; font-weight:800; line-height:1;">20</span>
             </div>
             <div style="background:#fff; padding:0.6rem 1.1rem; border-radius:var(--radius-md); border:1px solid var(--border-medium);">
               <span style="font-size:0.75rem; text-transform:uppercase; color:var(--text-muted); font-weight:700; display:block;">High / Critical Risk</span>
@@ -491,7 +504,7 @@
             </div>
             <div style="background:#fff; padding:0.6rem 1.1rem; border-radius:var(--radius-md); border:1px solid var(--border-medium);">
               <span style="font-size:0.75rem; text-transform:uppercase; color:var(--text-muted); font-weight:700; display:block;">Cohort Positivity Rate</span>
-              <span id="batchPositivityRate" class="mono text-orange" style="font-size:1.45rem; font-weight:800; line-height:1;">55.0%</span>
+              <span id="batchPositivityRate" class="mono text-blue" style="font-size:1.45rem; font-weight:800; line-height:1;">55.0%</span>
             </div>
           </div>
 
@@ -541,7 +554,7 @@
     <div class="modal-container">
       <div class="modal-header">
         <div style="display:flex; align-items:center; gap:0.75rem;">
-          <i data-lucide="file-text" class="text-orange" style="width:24px;height:24px;"></i>
+          <i data-lucide="file-text" class="text-blue" style="width:24px;height:24px;"></i>
           <h3 style="font-size:1.25rem;">Cardiovascular Risk Assessment Summary</h3>
         </div>
         <button class="close-btn" onclick="closeReportModal()">&times;</button>
