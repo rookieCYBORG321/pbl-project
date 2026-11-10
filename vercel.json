@@ -1,6 +1,4 @@
 {
-  "version": 2,
-  "name": "cardiopulse-ai",
-  "cleanUrls": true,
-  "trailingSlash": false
+  "framework": null,
+  "outputDirectory": "."
 }

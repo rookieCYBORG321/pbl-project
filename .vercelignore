@@ -1,6 +1,9 @@
 CDP_v3.ipynb
 __pycache__
 *.pyc
+*.py
+requirements.txt
+start.sh
+test_pipeline.py
 .git
 .gemini
-test_pipeline.py
