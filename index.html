@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CardioPulse AI | Clinical Parameters, Stress Testing & CSV Batch Analysis</title>
+  
+  <!-- Clinical Meta -->
+  <meta name="description" content="CardioPulse AI: Precision cardiovascular risk stratification, real-time stress test parameters evaluation, and instant batch CSV cohort screening.">
+  <meta name="author" content="CardioPulse Clinical AI Research Team">
+
+  <!-- Google Fonts: Plus Jakarta Sans, Inter, JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Design System Stylesheet -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- ========================================================================= -->
+  <!-- 1. NAVIGATION BAR -->
+  <!-- ========================================================================= -->
+  <header class="navbar">
+    <div class="container navbar-inner">
+      <a href="#" class="brand">
+        <div class="brand-icon">
+          <i data-lucide="activity"></i>
+        </div>
+        <div class="brand-text">CardioPulse <span>AI</span></div>
+      </a>
+
+      <div class="nav-menu">
+        <a href="#workbenchSection" class="nav-link active">
+          <i data-lucide="stethoscope"></i> Clinical Parameters & Stress Testing
+        </a>
+        <a href="#batchSection" class="nav-link">
+          <i data-lucide="file-spreadsheet"></i> CSV Upload & Cohort Analysis
+        </a>
+      </div>
+
+      <div class="nav-actions">
+        <button id="navBtnExportReport" class="btn btn-secondary btn-sm" onclick="openPrintReportModal()">
+          <i data-lucide="printer"></i> Export Report
+        </button>
+        <a href="#batchSection" class="btn btn-primary btn-sm">
+          <i data-lucide="upload"></i> Upload CSV
+        </a>
+        <button class="mobile-toggle" aria-label="Toggle navigation menu">
+          <i data-lucide="menu"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content Wrapper -->
+  <main class="main-content" style="padding-top: 1.5rem; padding-bottom: 3.5rem;">
+
+    <!-- ========================================================================= -->
+    <!-- 2. CLINICAL PARAMETERS & STRESS TESTING SECTION -->
+    <!-- ========================================================================= -->
+    <section id="workbenchSection" class="section" style="padding-top: 1rem; padding-bottom: 2.5rem;">
+      <div class="container">
+        
+        <!-- Section Header -->
+        <div class="section-header" style="margin-bottom: 1.5rem;">
+          <div class="section-badge"><i data-lucide="sliders"></i> Clinical Decision Support</div>
+          <h1 class="section-title" style="font-size: 2.15rem; margin-top: 0.5rem; margin-bottom: 0.35rem;">
+            Clinical Parameters & Stress Testing
+          </h1>
+          <p class="section-subtitle" style="font-size: 0.98rem; max-width: 780px;">
+            Input physiological vitals, exercise hemodynamics, and treadmill stress findings to run real-time multi-model stacking inference, Duke Ischemia scoring, and patient-specific SHAP attribution.
+          </p>
+        </div>
+
+        <!-- Quick Load Preset Cases Bar -->
+        <div class="presets-bar">
+          <span class="presets-label"><i data-lucide="bookmark"></i> Quick Load Clinical Cases:</span>
+          <button class="preset-chip active" data-preset="preset1">Patient A: Severe Ischemia (58M)</button>
+          <button class="preset-chip" data-preset="preset2">Patient B: Healthy Baseline (41F)</button>
+          <button class="preset-chip" data-preset="preset3">Patient C: Silent Ischemia / Diabetic (64M)</button>
+          <button class="preset-chip" data-preset="preset4">Patient D: Exercise Angina (49M)</button>
+          <button class="preset-chip" data-preset="preset5">Patient E: Zero-Chol Swiss (59M)</button>
+        </div>
+
+        <!-- Workbench Grid: Left Inputs / Right Results -->
+        <div class="calculator-grid" id="calculator">
+          
+          <!-- LEFT CARD: Patient Inputs Form -->
+          <div class="card">
+            <div class="card-header" style="display:flex; justify-content:space-between; align-items:center;">
+              <h3 class="card-title">
+                <i data-lucide="clipboard-check" class="text-orange" style="margin-right:0.5rem;"></i>
+                Clinical Parameters & Stress Testing
+              </h3>
+              <div style="display:flex; gap:0.5rem;">
+                <button id="btnRandomPatient" class="btn btn-secondary btn-sm" title="Generate random profile">
+                  <i data-lucide="shuffle"></i> Random
+                </button>
+                <button id="btnResetForm" class="btn btn-secondary btn-sm" title="Reset to healthy baseline">
+                  <i data-lucide="rotate-ccw"></i> Reset
+                </button>
+              </div>
+            </div>
+
+            <div class="card-body">
+              <div class="form-grid">
+                
+                <!-- Patient Age -->
+                <div class="form-group full-width">
+                  <div class="form-label">
+                    <span>Patient Age (Years)</span>
+                    <span class="form-label-val" id="valAge">58</span>
+                  </div>
+                  <div class="range-container">
+                    <input type="range" id="inputAge" class="range-slider" min="28" max="78" value="58">
+                  </div>
+                </div>
+
+                <!-- Biological Sex -->
+                <div class="form-group">
+                  <div class="form-label"><span>Biological Sex</span></div>
+                  <div class="radio-group">
+                    <label class="radio-pill">
+                      <input type="radio" name="selectSex" value="M" checked>
+                      <span class="radio-pill-label">Male (M)</span>
+                    </label>
+                    <label class="radio-pill">
+                      <input type="radio" name="selectSex" value="F">
+                      <span class="radio-pill-label">Female (F)</span>
+                    </label>
+                  </div>
+                </div>
+
+                <!-- Chest Pain Type -->
+                <div class="form-group">
+                  <div class="form-label"><span>Chest Pain Classification (CPT)</span></div>
+                  <div class="radio-group">
+                    <label class="radio-pill" title="Asymptomatic: High Risk">
+                      <input type="radio" name="selectChestPain" value="ASY" checked>
+                      <span class="radio-pill-label">ASY</span>
+                    </label>
+                    <label class="radio-pill" title="Non-Anginal Pain">
+                      <input type="radio" name="selectChestPain" value="NAP">
+                      <span class="radio-pill-label">NAP</span>
+                    </label>
+                    <label class="radio-pill" title="Atypical Angina: Protective">
+                      <input type="radio" name="selectChestPain" value="ATA">
+                      <span class="radio-pill-label">ATA</span>
+                    </label>
+                    <label class="radio-pill" title="Typical Angina">
+                      <input type="radio" name="selectChestPain" value="TA">
+                      <span class="radio-pill-label">TA</span>
+                    </label>
+                  </div>
+                </div>
+
+                <!-- Resting BP -->
+                <div class="form-group">
+                  <div class="form-label">
+                    <span>Resting BP (mmHg)</span>
+                    <span class="form-label-val" id="valRestingBP">140</span>
+                  </div>
+                  <div class="range-container">
+                    <input type="range" id="inputRestingBP" class="range-slider" min="80" max="200" value="140">
+                  </div>
+                </div>
+
+                <!-- Serum Cholesterol -->
+                <div class="form-group">
+                  <div class="form-label">
+                    <span>Serum Cholesterol (mg/dL)</span>
+                    <span class="form-label-val" id="valCholesterol">260 mg/dL</span>
+                  </div>
+                  <div class="range-container">
+                    <input type="range" id="inputCholesterol" class="range-slider" min="0" max="500" value="260">
+                  </div>
+                </div>
+
+                <!-- Fasting Blood Sugar -->
+                <div class="form-group">
+                  <div class="form-label"><span>Fasting BS &gt; 120 mg/dL (Diabetes)</span></div>
+                  <div class="radio-group">
+                    <label class="radio-pill">
+                      <input type="radio" name="selectFastingBS" value="0">
+                      <span class="radio-pill-label">No (&le;120)</span>
+                    </label>
+                    <label class="radio-pill">
+                      <input type="radio" name="selectFastingBS" value="1" checked>
+                      <span class="radio-pill-label">Yes (&gt;120)</span>
+                    </label>
+                  </div>
+                </div>
+
+                <!-- Resting ECG -->
+                <div class="form-group">
+                  <div class="form-label"><span>Resting ECG</span></div>
+                  <div class="radio-group">
+                    <label class="radio-pill">
+                      <input type="radio" name="selectRestingECG" value="Normal" checked>
+                      <span class="radio-pill-label">Normal</span>
+                    </label>
+                    <label class="radio-pill">
+                      <input type="radio" name="selectRestingECG" value="ST">
+                      <span class="radio-pill-label">ST Wave</span>
+                    </label>
+                    <label class="radio-pill">
+                      <input type="radio" name="selectRestingECG" value="LVH">
+                      <span class="radio-pill-label">LVH</span>
+                    </label>
+                  </div>
+                </div>
+
+                <!-- Max Heart Rate Achieved -->
+                <div class="form-group">
+                  <div class="form-label">
+                    <span>Max Heart Rate (bpm)</span>
+                    <span class="form-label-val" id="valMaxHR">118</span>
+                  </div>
+                  <div class="range-container">
+                    <input type="range" id="inputMaxHR" class="range-slider" min="60" max="210" value="118">
+                  </div>
+                </div>
+
+                <!-- Exercise Induced Angina -->
+                <div class="form-group">
+                  <div class="form-label"><span>Exercise Angina (ExAng)</span></div>
+                  <div class="radio-group">
+                    <label class="radio-pill">
+                      <input type="radio" name="selectExerciseAngina" value="N">
+                      <span class="radio-pill-label">No</span>
+                    </label>
+                    <label class="radio-pill">
+                      <input type="radio" name="selectExerciseAngina" value="Y" checked>
+                      <span class="radio-pill-label">Yes</span>
+                    </label>
+                  </div>
+                </div>
+
+                <!-- ST Depression Oldpeak -->
+                <div class="form-group">
+                  <div class="form-label">
+                    <span>ST Depression Oldpeak (mm)</span>
+                    <span class="form-label-val" id="valOldpeak">2.2</span>
+                  </div>
+                  <div class="range-container">
+                    <input type="range" id="inputOldpeak" class="range-slider" min="-1.5" max="6.2" step="0.1" value="2.2">
+                  </div>
+                </div>
+
+                <!-- ST Segment Slope -->
+                <div class="form-group">
+                  <div class="form-label"><span>Peak Exercise ST Slope</span></div>
+                  <div class="radio-group">
+                    <label class="radio-pill">
+                      <input type="radio" name="selectSTSlope" value="Up">
+                      <span class="radio-pill-label">Up-sloping</span>
+                    </label>
+                    <label class="radio-pill">
+                      <input type="radio" name="selectSTSlope" value="Flat" checked>
+                      <span class="radio-pill-label">Flat</span>
+                    </label>
+                    <label class="radio-pill">
+                      <input type="radio" name="selectSTSlope" value="Down">
+                      <span class="radio-pill-label">Down-sloping</span>
+                    </label>
+                  </div>
+                </div>
+
+                <!-- Action Button -->
+                <div class="form-group full-width" style="margin-top:0.75rem;">
+                  <button id="btnAnalyze" class="btn btn-primary" style="width:100%; font-size:1.1rem; padding:0.85rem 1.5rem; font-weight:700; letter-spacing:0.02em;">
+                    <i data-lucide="activity"></i> Analyze
+                  </button>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+          <!-- RIGHT CARD: Clinical Assessment Output -->
+          <div class="card assessment-card">
+            <div class="card-header" style="display:flex; justify-content:space-between; align-items:center;">
+              <h3 class="card-title">
+                <i data-lucide="gauge" class="text-orange" style="margin-right:0.5rem;"></i>
+                Clinical Assessment
+              </h3>
+              <button id="btnPrintReport" class="btn btn-secondary btn-sm" title="Generate printable clinical assessment summary">
+                <i data-lucide="printer"></i> Export Report
+              </button>
+            </div>
+
+            <div class="card-body">
+              
+              <!-- Unified High-Precision SVG Gauge -->
+              <div class="gauge-section">
+                <div class="gauge-wrapper">
+                  <svg viewBox="0 0 240 145" class="gauge-svg">
+                    <defs>
+                      <linearGradient id="gaugeGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" stop-color="#10B981" />
+                        <stop offset="25%" stop-color="#34D399" />
+                        <stop offset="45%" stop-color="#F59E0B" />
+                        <stop offset="70%" stop-color="#EA580C" />
+                        <stop offset="100%" stop-color="#DC2626" />
+                      </linearGradient>
+                      <filter id="gaugeShadow" x="-20%" y="-20%" width="140%" height="140%">
+                        <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.15" />
+                      </filter>
+                    </defs>
+
+                    <!-- Outer Track Background -->
+                    <path class="gauge-bg-arc" d="M 35 115 A 85 85 0 0 1 205 115" />
+
+                    <!-- Active Colored Progress Arc -->
+                    <path id="gaugeFillArc" class="gauge-fill-arc" d="M 35 115 A 85 85 0 0 1 205 115" />
+
+                    <!-- Scale Tick Marks & Labels -->
+                    <!-- 0% Tick (Left) -->
+                    <line x1="28" y1="115" x2="35" y2="115" stroke="#A8A29E" stroke-width="2" stroke-linecap="round" />
+                    <text x="20" y="130" font-size="10" font-family="'JetBrains Mono', monospace" font-weight="600" fill="#78716C" text-anchor="middle">0%</text>
+
+                    <!-- 50% Tick (Apex) -->
+                    <line x1="120" y1="23" x2="120" y2="30" stroke="#A8A29E" stroke-width="2" stroke-linecap="round" />
+                    <text x="120" y="18" font-size="10" font-family="'JetBrains Mono', monospace" font-weight="600" fill="#78716C" text-anchor="middle">50%</text>
+
+                    <!-- 100% Tick (Right) -->
+                    <line x1="205" y1="115" x2="212" y2="115" stroke="#A8A29E" stroke-width="2" stroke-linecap="round" />
+                    <text x="220" y="130" font-size="10" font-family="'JetBrains Mono', monospace" font-weight="600" fill="#78716C" text-anchor="middle">100%</text>
+
+                    <!-- Optimal Cutoff 0.371 Marker Notch -->
+                    <g class="cutoff-marker-group" title="Optimal Triage Cutoff (37.1%)">
+                      <line x1="88" y1="43" x2="81" y2="28" stroke="#EA580C" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="2,2" />
+                      <circle cx="81" cy="28" r="3" fill="#EA580C" />
+                      <text x="70" y="24" font-size="9" font-family="'JetBrains Mono', monospace" font-weight="700" fill="#EA580C" text-anchor="end">Cutoff 0.371</text>
+                    </g>
+
+                    <!-- Animated Needle Group (Pivoting at exact arc center: 120, 115) -->
+                    <g id="gaugeNeedle" class="gauge-needle-group" filter="url(#gaugeShadow)">
+                      <!-- Needle Shaft -->
+                      <polygon points="117.5,115 122.5,115 120.8,36 119.2,36" fill="#1C1917" />
+                      <!-- Needle Accent Tip -->
+                      <polygon points="118.5,44 121.5,44 120,31" fill="#EA580C" />
+                      <!-- Center Pivot Base -->
+                      <circle cx="120" cy="115" r="9" fill="#1C1917" />
+                      <circle cx="120" cy="115" r="5" fill="#EA580C" />
+                      <circle cx="120" cy="115" r="2" fill="#FFFFFF" />
+                    </g>
+                  </svg>
+                </div>
+
+                <div class="gauge-value-display">
+                  <div class="gauge-prob-number" id="resProbNumber">92.4<span>%</span></div>
+                  <div id="resRiskBadge" class="gauge-risk-pill badge-red">CRITICAL RISK</div>
+                </div>
+              </div>
+
+              <!-- Dual Triage Cutoff Comparisons -->
+              <div class="threshold-box">
+                <div class="threshold-item">
+                  <div class="threshold-name">Standard Cutoff (0.50)</div>
+                  <div class="threshold-decision" id="resDecisionDefault">DISEASE (1)</div>
+                </div>
+                <div class="threshold-item" style="border: 1.5px solid var(--orange-400); background-color: var(--orange-50);">
+                  <div class="threshold-name" style="color:var(--orange-800); font-weight:700;">Optimal Cutoff (0.371)</div>
+                  <div class="threshold-decision" id="resDecisionTuned" style="color:var(--status-critical);">DISEASE (1)</div>
+                </div>
+              </div>
+
+              <!-- Derived Clinical Biomarkers Strip -->
+              <div class="biomarkers-grid">
+                <div class="biomarker-chip">
+                  <span class="biomarker-label">Max HR % Achieved</span>
+                  <span class="biomarker-value" id="bmMaxHRPct">72.8%</span>
+                </div>
+                <div class="biomarker-chip">
+                  <span class="biomarker-label">Chronotropic State</span>
+                  <span class="biomarker-value" id="bmChronotropic">INCOMPETENT (&lt;80%)</span>
+                </div>
+                <div class="biomarker-chip">
+                  <span class="biomarker-label">Duke Ischemia Score</span>
+                  <span class="biomarker-value mono" id="bmIschemiaScore">10.0</span>
+                </div>
+                <div class="biomarker-chip">
+                  <span class="biomarker-label">Rate-Pressure Product</span>
+                  <span class="biomarker-value" id="bmRPP">16.5 k</span>
+                </div>
+                <div class="biomarker-chip">
+                  <span class="biomarker-label">Metabolic Risk</span>
+                  <span class="biomarker-value" id="bmMetabolicRisk">3 / 4</span>
+                </div>
+                <div class="biomarker-chip">
+                  <span class="biomarker-label">K-Means Phenotype</span>
+                  <span class="biomarker-value" id="bmPhenotype">Severe Exercise Ischemia</span>
+                </div>
+              </div>
+
+              <!-- Patient-Specific SHAP Impact Breakdown -->
+              <div class="shap-breakdown-card">
+                <div class="shap-breakdown-title">
+                  <span><i data-lucide="git-commit"></i> Patient SHAP Attributions</span>
+                  <span style="font-size:0.75rem; color:var(--text-muted); font-weight:normal;">Local Explanations</span>
+                </div>
+                <div class="shap-bars-list" id="shapBarsList">
+                  <!-- Dynamically populated via app.js -->
+                </div>
+              </div>
+
+              <!-- Actionable Triage Recommendation -->
+              <div class="triage-guidance" id="resClinicalAction">
+                Urgent cardiology alert: Evidence of severe myocardial ischemia and silent transmural damage. Immediate stress echocardiography, troponin assay, and urgent catheterization angiography indicated.
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================================= -->
+    <!-- 3. BATCH CSV UPLOAD & COHORT SCREENING SECTION -->
+    <!-- ========================================================================= -->
+    <section id="batchSection" class="section section-alt" style="padding-top: 2.5rem; padding-bottom: 2.5rem;">
+      <div class="container">
+        
+        <!-- Section Header -->
+        <div class="section-header" style="margin-bottom: 1.5rem;">
+          <div class="section-badge"><i data-lucide="file-spreadsheet"></i> Cohort Screening Engine</div>
+          <h2 class="section-title" style="font-size: 2.15rem; margin-top: 0.5rem; margin-bottom: 0.35rem;">
+            CSV Upload & Batch Cohort Analysis
+          </h2>
+          <p class="section-subtitle" style="font-size: 0.98rem; max-width: 820px;">
+            Upload any patient cohort CSV file to evaluate dozens or hundreds of patient records simultaneously. The pipeline computes calibrated stacking probabilities, dual-cutoff triage decisions, Duke Ischemia scores, and allows one-click export.
+          </p>
+        </div>
+
+        <!-- CSV Upload Zone & Actions -->
+        <div class="card" style="padding: 1.75rem; margin-bottom: 2rem;">
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem; margin-bottom:1.25rem;">
+            <div>
+              <h3 style="font-size:1.15rem; font-weight:700; margin-bottom:0.25rem;">
+                <i data-lucide="upload-cloud" class="text-orange" style="margin-right:0.4rem;"></i>
+                Upload Patient Cohort CSV
+              </h3>
+              <p style="font-size:0.85rem; color:var(--text-muted);">
+                Supported columns: <code>Age, Sex, ChestPainType, RestingBP, Cholesterol, FastingBS, RestingECG, MaxHR, ExerciseAngina, Oldpeak, ST_Slope</code>
+              </p>
+            </div>
+            
+            <div style="display:flex; gap:0.6rem; flex-wrap:wrap;">
+              <button class="btn btn-secondary btn-sm" onclick="loadSampleBatchCohort()">
+                <i data-lucide="refresh-cw"></i> Load 20-Patient Demo Cohort
+              </button>
+              <button class="btn btn-secondary btn-sm" onclick="downloadSampleTemplateCSV()">
+                <i data-lucide="file-text"></i> Download CSV Template
+              </button>
+            </div>
+          </div>
+
+          <!-- Drag and Drop Dropzone -->
+          <label class="upload-zone" for="csvFileInput" id="dropZone" style="display:block; margin-bottom:0;">
+            <div class="upload-icon">
+              <i data-lucide="folder-up" style="width:40px;height:40px;"></i>
+            </div>
+            <h4 style="font-size:1.1rem; font-weight:700; margin-bottom:0.35rem;">Click to browse or drop your CSV file here</h4>
+            <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:1rem;">
+              Evaluates all records instantly with 47 engineered biomarkers and dual triage cutoffs.
+            </p>
+            <span class="btn btn-primary btn-sm">
+              <i data-lucide="upload"></i> Select CSV File
+            </span>
+            <input type="file" id="csvFileInput" accept=".csv" style="display:none;">
+          </label>
+        </div>
+
+        <!-- Cohort Summary Metric Cards -->
+        <div class="batch-toolbar" style="margin-bottom:1.25rem;">
+          <div style="display:flex; gap:1.75rem; align-items:center; flex-wrap:wrap;">
+            <div style="background:#fff; padding:0.6rem 1.1rem; border-radius:var(--radius-md); border:1px solid var(--border-medium);">
+              <span style="font-size:0.75rem; text-transform:uppercase; color:var(--text-muted); font-weight:700; display:block;">Total Patients</span>
+              <span id="batchTotalCount" class="mono text-orange" style="font-size:1.45rem; font-weight:800; line-height:1;">20</span>
+            </div>
+            <div style="background:#fff; padding:0.6rem 1.1rem; border-radius:var(--radius-md); border:1px solid var(--border-medium);">
+              <span style="font-size:0.75rem; text-transform:uppercase; color:var(--text-muted); font-weight:700; display:block;">High / Critical Risk</span>
+              <span id="batchHighRiskCount" class="mono text-red" style="font-size:1.45rem; font-weight:800; line-height:1;">11</span>
+            </div>
+            <div style="background:#fff; padding:0.6rem 1.1rem; border-radius:var(--radius-md); border:1px solid var(--border-medium);">
+              <span style="font-size:0.75rem; text-transform:uppercase; color:var(--text-muted); font-weight:700; display:block;">Cohort Positivity Rate</span>
+              <span id="batchPositivityRate" class="mono text-orange" style="font-size:1.45rem; font-weight:800; line-height:1;">55.0%</span>
+            </div>
+          </div>
+
+          <div style="display:flex; gap:0.75rem;">
+            <button id="btnExportBatchCSV" class="btn btn-primary btn-sm">
+              <i data-lucide="download"></i> Export Predictions CSV
+            </button>
+          </div>
+        </div>
+
+        <!-- Analyzed Cohort Table -->
+        <div class="card" style="padding:0; overflow:hidden;">
+          <div class="batch-table-wrap" style="max-height: 520px;">
+            <table class="batch-table">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Age</th>
+                  <th>Sex</th>
+                  <th>Chest Pain</th>
+                  <th>BP / Chol</th>
+                  <th>Max HR</th>
+                  <th>ExAng</th>
+                  <th>Oldpeak</th>
+                  <th>ST Slope</th>
+                  <th>Risk Prob</th>
+                  <th>Triage Tier</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="batchTableBody">
+                <!-- Dynamically populated via app.js -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ========================================================================= -->
+  <!-- 4. PRINTABLE PATIENT CLINICAL REPORT MODAL -->
+  <!-- ========================================================================= -->
+  <div id="reportModal" class="modal-overlay">
+    <div class="modal-container">
+      <div class="modal-header">
+        <div style="display:flex; align-items:center; gap:0.75rem;">
+          <i data-lucide="file-text" class="text-orange" style="width:24px;height:24px;"></i>
+          <h3 style="font-size:1.25rem;">Cardiovascular Risk Assessment Summary</h3>
+        </div>
+        <button class="close-btn" onclick="closeReportModal()">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="report-paper">
+          <div class="report-header">
+            <div>
+              <h2 style="font-size:1.5rem; color:var(--text-primary); font-family:var(--font-heading);">CARDIOPULSE CLINICAL REPORT</h2>
+              <p style="color:var(--text-muted); font-size:0.85rem;">Confidential Medical Decision Support Document</p>
+            </div>
+            <div style="text-align:right; font-size:0.85rem; color:var(--text-muted);">
+              <div><strong>Report ID:</strong> <span id="repPatientID">CP-849102</span></div>
+              <div><strong>Timestamp:</strong> <span id="repDate">November 10, 2026</span></div>
+            </div>
+          </div>
+
+          <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:1rem; padding:1rem; background-color:var(--bg-subtle); border-radius:var(--radius-md); margin-bottom:1.5rem;">
+            <div>
+              <div style="font-size:0.75rem; color:var(--text-muted); text-transform:uppercase; font-weight:700;">Patient</div>
+              <div id="repAgeSex" style="font-weight:700; font-size:1rem;">58 Years / Male</div>
+            </div>
+            <div>
+              <div style="font-size:0.75rem; color:var(--text-muted); text-transform:uppercase; font-weight:700;">Stacking Probability</div>
+              <div id="repRiskProb" style="font-weight:800; font-size:1.2rem; color:var(--orange-600);">92.4%</div>
+            </div>
+            <div>
+              <div style="font-size:0.75rem; color:var(--text-muted); text-transform:uppercase; font-weight:700;">Triage Stratum</div>
+              <div id="repRiskTier" class="badge badge-red" style="font-size:0.85rem; font-weight:800; display:inline-block; margin-top:0.25rem;">CRITICAL RISK</div>
+            </div>
+          </div>
+
+          <div class="report-section-title">Clinical Vitals & Physiological Baseline</div>
+          <p id="repVitals" style="font-size:0.9rem; color:var(--text-secondary); margin-bottom:0.75rem;">BP: 140 mmHg | Chol: 260 mg/dL | Fasting BS &gt; 120: Yes</p>
+
+          <div class="report-section-title">Stress Electrocardiogram & Hemodynamics</div>
+          <p id="repStress" style="font-size:0.9rem; color:var(--text-secondary); margin-bottom:0.35rem;">Max HR: 118 bpm (72.8% of theoretical max) | Exercise Angina: Yes</p>
+          <p id="repECG" style="font-size:0.9rem; color:var(--text-secondary); margin-bottom:0.75rem;">Resting ECG: Normal | ST Depression: 2.2 mm | ST Slope: Flat</p>
+
+          <div class="report-section-title">Derived Cardiology Biomarkers</div>
+          <p id="repIschemiaScore" style="font-size:0.9rem; color:var(--text-secondary); margin-bottom:0.75rem;">Duke Severity Score: 10.0 | Rate-Pressure Product: 16.5 k</p>
+
+          <div class="report-section-title">Primary Risk Drivers (Patient SHAP Attributions)</div>
+          <ul id="repTopDrivers" style="padding-left:1.25rem; font-size:0.88rem; line-height:1.7; margin-bottom:1rem;"></ul>
+
+          <div class="report-section-title">Recommended Clinical Triage Pathway</div>
+          <div id="repGuidance" style="background-color:var(--orange-50); border:1px solid var(--orange-200); padding:1rem; border-radius:var(--radius-md); font-size:0.9rem; color:var(--orange-900); font-weight:500;">
+            Urgent cardiology alert: Evidence of severe myocardial ischemia and silent transmural damage. Immediate stress echocardiography, troponin assay, and urgent catheterization angiography indicated.
+          </div>
+
+          <div style="margin-top:2rem; padding-top:1rem; border-top:1px solid var(--border-subtle); font-size:0.75rem; color:var(--text-muted); text-align:center;">
+            <em>Disclaimer: CardioPulse AI is an auxiliary clinical decision support system. Final diagnostic judgment remains strictly with the attending physician.</em>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeReportModal()">Close</button>
+        <button class="btn btn-primary" onclick="printClinicalReport()">
+          <i data-lucide="printer"></i> Print / Save PDF
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- 5. MINIMAL FOOTER -->
+  <!-- ========================================================================= -->
+  <footer class="footer" style="padding: 2rem 0; border-top: 1px solid var(--border-subtle); background: var(--bg-surface);">
+    <div class="container" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem;">
+      <div class="brand" style="margin-bottom:0;">
+        <div class="brand-icon" style="width:28px;height:28px;">
+          <i data-lucide="activity" style="width:16px;height:16px;"></i>
+        </div>
+        <div class="brand-text" style="font-size:1.1rem;">CardioPulse <span>AI</span></div>
+      </div>
+      <p style="font-size:0.82rem; color:var(--text-muted); margin:0;">
+        Clinical Cardiovascular Risk Stratification &bull; Two-Tier Stacking Ensemble &bull; Released under MIT License
+      </p>
+    </div>
+  </footer>
+
+  <!-- Application Logic -->
+  <script src="app.js"></script>
+
+  <!-- Lucide Icon Initialization -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      if (window.lucide) {
+        lucide.createIcons();
+      }
+    });
+  </script>
+</body>
+</html>

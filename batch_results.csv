@@ -1,0 +1,21 @@
+Age,Sex,ChestPainType,RestingBP,Cholesterol,FastingBS,RestingECG,MaxHR,ExerciseAngina,Oldpeak,ST_Slope,ExpectedRisk,HeartDisease,Predicted_Risk_Prob,Predicted_Class_Tuned,Risk_Category,Ischemia_Score,Chronotropic_Incompetence
+40,M,ATA,140,289,0,Normal,172,N,0.0,Up,Low,0,1.2,0,Low Risk,0.0,False
+49,F,NAP,160,180,0,Normal,156,N,1.0,Flat,High,1,29.3,0,Moderate / Borderline,5.5,False
+37,M,ATA,130,283,0,ST,98,N,0.0,Up,Low,0,2.7,0,Low Risk,0.0,True
+48,F,ASY,138,214,0,Normal,108,Y,1.5,Flat,Critical,1,99.5,1,Critical Risk,11.25,True
+54,M,NAP,150,195,0,Normal,122,N,0.0,Up,Low,0,5.0,0,Low Risk,0.0,True
+58,M,ASY,140,260,1,Normal,118,Y,2.2,Flat,Critical,1,99.5,1,Critical Risk,13.0,True
+42,F,ATA,120,210,0,Normal,170,N,0.0,Up,Low,0,1.2,0,Low Risk,0.0,False
+64,M,ASY,145,245,1,LVH,105,Y,2.8,Down,Critical,1,99.5,1,Critical Risk,17.5,True
+51,M,NAP,125,230,0,Normal,150,N,0.5,Up,Low,0,1.2,0,Low Risk,1.25,False
+60,M,ASY,150,240,0,ST,120,Y,1.8,Flat,High,1,99.5,1,Critical Risk,12.0,True
+45,F,TA,130,235,0,Normal,165,N,0.0,Up,Low,0,1.2,0,Low Risk,0.0,False
+67,M,ASY,160,285,1,LVH,108,Y,3.0,Flat,Critical,1,99.5,1,Critical Risk,15.0,True
+52,F,ATA,128,205,0,Normal,158,N,0.2,Up,Low,0,1.2,0,Low Risk,0.5,False
+59,M,ASY,135,0,0,Normal,115,Y,1.6,Flat,High,1,99.5,1,Critical Risk,11.5,True
+43,M,NAP,120,225,0,Normal,162,N,0.0,Up,Low,0,1.2,0,Low Risk,0.0,False
+63,F,ASY,150,270,0,ST,112,Y,2.0,Down,Critical,1,99.5,1,Critical Risk,15.5,True
+39,M,ATA,122,215,0,Normal,175,N,0.0,Up,Low,0,1.2,0,Low Risk,0.0,False
+56,M,ASY,142,250,1,Normal,125,Y,1.4,Flat,High,1,99.5,1,Critical Risk,11.0,True
+47,F,NAP,130,190,0,Normal,148,N,0.8,Up,Low,0,1.2,0,Low Risk,2.0,False
+65,M,ASY,170,265,1,LVH,92,Y,3.5,Down,Critical,1,99.5,1,Critical Risk,19.25,True

@@ -1,0 +1,6 @@
+CDP_v3.ipynb
+__pycache__
+*.pyc
+.git
+.gemini
+test_pipeline.py
