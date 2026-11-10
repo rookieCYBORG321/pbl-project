@@ -7,6 +7,11 @@
 [![Zero-Dependency Engine](https://img.shields.io/badge/Zero--Dependency-Production%20Engine-orange.svg)]()
 [![License: MIT](https://img.shields.io/badge/License-MIT-beige.svg)](LICENSE)
 
+[![Vercel Deployment](https://img.shields.io/badge/Deployed%20on-Vercel-black.svg?logo=vercel)](https://cardiopulse-ai-gamma.vercel.app)
+[![Live URL](https://img.shields.io/badge/Live%20URL-cardiopulse--ai--gamma.vercel.app-orange.svg)](https://cardiopulse-ai-gamma.vercel.app)
+
+> **Live Production URL**: [https://cardiopulse-ai-gamma.vercel.app](https://cardiopulse-ai-gamma.vercel.app)
+
 CardioPulse AI is an end-to-end, clinical-grade cardiovascular risk stratification platform developed on the multi-center **Fedesoriano 5-hospital cohort** ($N = 918$ patients). It combines **47 engineered cardiology biomarkers**, a **two-tier multi-model stacking ensemble** (CatBoost, LightGBM, XGBoost, ExtraTrees, Random Forest, SVM, MLP with calibrated Logistic Regression meta-learner), game-theoretic **SHAP explainability**, and a **zero-dependency responsive web application** designed in a clean, polished **orange and beige theme**.
 
 ---
